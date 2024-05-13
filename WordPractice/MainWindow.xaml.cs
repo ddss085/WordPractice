@@ -23,17 +23,17 @@ namespace WordPractice
             InitializeComponent();
             LoadXmlFile();
 
-            _questionsQueue = new Queue<QuestionSet>();
+            _questionsStack = new Stack<QuestionSet>();
         }
 
         private QuestionSets _questionSets = null;
         private QuestionSet _pickedQuestion = null;
-        private Queue<QuestionSet> _questionsQueue = null;
+        private Stack<QuestionSet> _questionsStack = null;
 
         private void LoadXmlFile()
         {
             string filePath = "Data/Questions.xml";
-            string fullPath = Directory.GetCurrentDirectory() + '/' + filePath;
+            //string fullPath = Directory.GetCurrentDirectory() + '/' + filePath;
 
 
             XmlSerializer serializer = new XmlSerializer(typeof(QuestionSets));
@@ -61,8 +61,12 @@ namespace WordPractice
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            _pickedQuestion = RandomPicker.PickRandom(_questionSets.Sets);
-            UpdateGUI();
+            if (_questionSets == null)
+            {
+                MessageBox.Show("xml 데이터를 불러올 수 없습니다.");
+                Application.Current.Shutdown();
+            }
+            else OnNext();
         }
 
 
@@ -72,7 +76,7 @@ namespace WordPractice
             txtHanzi.Text = _pickedQuestion.Hanzi;
             txtPinyin.Text = _pickedQuestion.Pinyin;
             txtHanzi.Visibility = Visibility.Collapsed;
-            txtCount.Text = (_questionsQueue.Count + 1).ToString();
+            txtCount.Text = (_questionsStack.Count + 1).ToString();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -98,7 +102,7 @@ namespace WordPractice
 
         private void OnNext()
         {
-            if (_pickedQuestion != null) _questionsQueue.Enqueue(_pickedQuestion);
+            if (_pickedQuestion != null) _questionsStack.Push(_pickedQuestion);
             _pickedQuestion = RandomPicker.PickRandom(_questionSets.Sets);
             UpdateGUI();
         }
@@ -110,8 +114,9 @@ namespace WordPractice
 
         private void OnPrevious()
         {
-            if (_questionsQueue.TryDequeue(out _pickedQuestion))
+            if (_questionsStack.TryPop(out QuestionSet question))
             {
+                _pickedQuestion = question;
                 UpdateGUI();
             }
         }
