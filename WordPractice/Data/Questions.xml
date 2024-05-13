@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 1번 -->
+<QuestionSets>
+    <QuestionSet>
+        <Question>那個漢字的_____怎么写?</Question>
+            <Hanzi>倂音</Hanzi>
+            <Pinyin>pǐnyīn</Pinyin>
+        </QuestionSet>
+        <QuestionSet>
+            <Question>我的_____去年卖出提高了</Question>
+            <Hanzi>公司</Hanzi>
+            <Pinyin>gōngsi</Pinyin>
+        </QuestionSet>
+</QuestionSets>
