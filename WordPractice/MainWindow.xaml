@@ -6,28 +6,62 @@
         xmlns:local="clr-namespace:WordPractice"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded" KeyDown="Window_KeyDown">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="0.6*"/>
-            <RowDefinition Height="0.2*"/>
-            <RowDefinition Height="0.2*"/>
-        </Grid.RowDefinitions>
-        <Grid Margin="20">
-            <TextBlock Name="txtCount" HorizontalAlignment="Center" FontSize="12">Count</TextBlock>
-            <TextBlock Name="txtQuestion" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24" TextWrapping="Wrap">Question</TextBlock>
-        </Grid>
-        <Grid Grid.Row="1" VerticalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Name="txtHanzi" Grid.Column="0" FontSize="36" TextAlignment="Center">Hanzi</TextBlock>
-            <TextBlock Name="txtPinyin" Grid.Column="1" FontSize="36" TextAlignment="Center">Pinyin</TextBlock>
-        </Grid>
-        <Grid Grid.Row="2" Margin="10">
-            <Button Tag="Previous" HorizontalAlignment="Left" Width="100" Click="Button_Click">Previous</Button>
-            <Button Tag="Show" HorizontalAlignment="Center" Width="100" Click="Button_Click">Show</Button>
-            <Button Tag="Next" HorizontalAlignment="Right" Width="100" Click="Button_Click">Next</Button>
-        </Grid>
-    </Grid>
+    <TabControl x:Name="tbControl">
+        <TabItem Header="Run">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.6*"/>
+                    <RowDefinition Height="0.2*"/>
+                    <RowDefinition Height="0.2*"/>
+                </Grid.RowDefinitions>
+                <Grid Margin="20">
+                    <TextBlock Name="txtCount" HorizontalAlignment="Center" FontSize="12">Count</TextBlock>
+                    <TextBlock Name="txtQuestion" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24" TextWrapping="Wrap">Question</TextBlock>
+                </Grid>
+                <Grid Grid.Row="1" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Name="txtHanzi" Grid.Column="0" FontSize="36" TextAlignment="Center">Hanzi</TextBlock>
+                    <TextBlock Name="txtPinyin" Grid.Column="1" FontSize="36" TextAlignment="Center">Pinyin</TextBlock>
+                </Grid>
+                <Grid Grid.Row="2" Margin="10">
+                    <Button Tag="Previous" HorizontalAlignment="Left" Width="100" Click="RunButton_Click">Previous</Button>
+                    <Button Tag="Show" HorizontalAlignment="Center" Width="100" Click="RunButton_Click">Show</Button>
+                    <Button Tag="Next" HorizontalAlignment="Right" Width="100" Click="RunButton_Click">Next</Button>
+                </Grid>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Edit">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.1*"/>
+                    <RowDefinition Height="0.9*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Button Tag="Add" Width="80" Click="EditButton_Click">Add</Button>
+                    <Separator Width="20" Background="Transparent"/>
+                    <Button Tag="Remove" Width="80" Click="EditButton_Click">Remove</Button>
+                </StackPanel>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.2*"/>
+                        <ColumnDefinition Width="0.8*"/>
+                    </Grid.ColumnDefinitions>
+                    <ListView x:Name="lstView" SelectionChanged="ListView_SelectionChanged">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox IsChecked="{Binding Use}" Checked="CheckBox_CheckedChanged" Unchecked="CheckBox_CheckedChanged"/>
+                                    <TextBlock Text="{Binding Name}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <DataGrid x:Name="dtGrid" Grid.Column="1" AutoGenerateColumns="True" CellEditEnding="dtGrid_CellEditEnding" CanUserDeleteRows="False" CanUserAddRows="False"/>
+                </Grid>
+            </Grid>
+        </TabItem>
+    </TabControl>
 </Window>
