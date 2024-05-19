@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Text;
 using System.Windows;
@@ -79,6 +80,8 @@ namespace WordPractice
                 // 오류 발생 시 예외 내용 출력
                 Console.WriteLine($"An error occurred: {ex.Message}");
             }
+
+            UpdateActiveQuestionSets();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -189,6 +192,15 @@ namespace WordPractice
                     case "Remove":
                         OnRemove();
                         break;
+                    case "New":
+                        OnNew();
+                        break;
+                    case "Delete":
+                        OnDelete();
+                        break;
+                    case "Save":
+                        OnSave();
+                        break;
                     default:
                         break;
                 }
@@ -197,11 +209,32 @@ namespace WordPractice
 
         private void OnAdd()
         {
+            QuestionBunches.Add(new QuestionBunch { Name = "New Bunch", Use = false, QuestionSets = [] });
+            _root.QuestionBunches = QuestionBunches.ToArray();
+            SaveXmlData();
+        }
+        private void OnRemove()
+        {
+            if (lstView.SelectedItem is QuestionBunch selectedBunch)
+            {
+                if (MessageBox.Show("Are you really gonna remove this bunch?", "", MessageBoxButton.YesNoCancel) == MessageBoxResult.Yes)
+                {
+                    if (MessageBox.Show("REALLY?", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    {
+                        QuestionBunches.Remove(selectedBunch);
+                        _root.QuestionBunches = QuestionBunches.ToArray();
+                        SaveXmlData();
+                    }
+                }
+            }
+        }
+        private void OnNew()
+        {
             QuestionSets.Add(new QuestionSet { Question = "", Hanzi = "", Pinyin = "" });
             _root.QuestionBunches[lstView.SelectedIndex].QuestionSets = QuestionSets.ToArray();
             SaveXmlData();
         }
-        private void OnRemove()
+        private void OnDelete()
         {
             if (dtGrid.SelectedItem is QuestionSet selectedQuestion)
             {
@@ -217,8 +250,159 @@ namespace WordPractice
                 MessageBox.Show("Please select a question to delete.");
             }
         }
+        private void OnSave()
+        {
+            SaveXmlData();
+            MessageBox.Show("A xml file has been saved.");
+        }
+
+
+        private void ListView_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            if (lstView.SelectedItem is QuestionBunch questionBunch)
+            {
+                QuestionSets.Clear();
+                foreach (var question in questionBunch.QuestionSets)
+                {
+                    QuestionSets.Add(question);
+                }
+            }
+        }
+
+        private void CheckBox_CheckedChanged(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox checkBox && checkBox.DataContext is QuestionBunch item)
+            {
+                if (checkBox.IsChecked.HasValue)
+                    item.Use = checkBox.IsChecked.Value;
+                SaveXmlData();
+            }
+        }
+
+        private DateTime _lastClickTime;
+        private const int DoubleClickSpeed = 300; // milliseconds
+
+        private void TextBlock_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DateTime now = DateTime.Now;
+            if ((now - _lastClickTime).TotalMilliseconds <= DoubleClickSpeed)
+            {
+                if (sender is TextBlock textBlock)
+                {
+                    ChangeBunchName(textBlock);
+                }
+            }
+            _lastClickTime = now;
+        }
+
+        private void ChangeBunchName(TextBlock textBlock)
+        {
+            var textBox = FindSibling<TextBox>(textBlock);
+            if (textBox != null)
+            {
+                textBox.Text = textBlock.Text;
+                textBlock.Visibility = Visibility.Collapsed;
+                textBox.Visibility = Visibility.Visible;
+                // Dispatcher를 사용하여 포커스를 지연 설정
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    textBox.Focus();
+                    textBox.SelectAll();
+                }), System.Windows.Threading.DispatcherPriority.Input);
+            }
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is TextBox textBox)
+            {
+                var textBlock = FindSibling<TextBlock>(textBox);
+                if (textBlock != null)
+                {
+                    textBlock.Text = textBox.Text;
+                    textBox.Visibility = Visibility.Collapsed;
+                    textBlock.Visibility = Visibility.Visible;
+                    SaveXmlData();
+                }
+            }
+        }
+
+        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (sender is TextBox textBox)
+            {
+                var textBlock = FindSibling<TextBlock>(textBox);
+                if (textBlock != null)
+                {
+                    if (e.Key == Key.Enter)
+                    {
+                        textBlock.Text = textBox.Text;
+                        textBox.Visibility = Visibility.Collapsed;
+                        textBlock.Visibility = Visibility.Visible;
+                        SaveXmlData();
+                    }
+                    else if (e.Key == Key.Escape)
+                    {
+                        textBox.Visibility = Visibility.Collapsed;
+                        textBlock.Visibility = Visibility.Visible;
+                    }
+                }
+            }
+        }
+
+        private void DataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            _root.QuestionBunches[lstView.SelectedIndex].QuestionSets = QuestionSets.ToArray();
+            SaveXmlData();
+        }
+        private void DataGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // Clear sorting
+            ICollectionView collectionView = CollectionViewSource.GetDefaultView(dtGrid.ItemsSource);
+            if (collectionView != null)
+            {
+                collectionView.SortDescriptions.Clear();
+                // Refresh the view
+                collectionView.Refresh();
+            }
+
+            // Clear sort direction indicators
+            foreach (var column in dtGrid.Columns)
+            {
+                column.SortDirection = null;
+            }
+        }
+
+        private T FindSibling<T>(FrameworkElement element) where T : FrameworkElement
+        {
+            var parent = (FrameworkElement)element.Parent;
+            foreach (var child in parent.FindVisualChildren<T>())
+            {
+                return child;
+            }
+            return null;
+        }
+        private T FindVisualChild<T>(DependencyObject obj) where T : DependencyObject
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(obj, i);
+                if (child != null && child is T t)
+                {
+                    return t;
+                }
+
+                T childOfChild = FindVisualChild<T>(child);
+                if (childOfChild != null)
+                {
+                    return childOfChild;
+                }
+            }
+            return null;
+        }
 
         #endregion
+
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (tbControl?.SelectedIndex == 0)
@@ -244,36 +428,31 @@ namespace WordPractice
                 {
                     switch (e.Key)
                     {
-                        case Key.N:
+                        case Key.A:
                             OnAdd();
                             break;
-                        case Key.D:
+                        case Key.R:
                             OnRemove();
+                            break;
+                        case Key.N:
+                            OnNew();
+                            break;
+                        case Key.D:
+                            OnDelete();
+                            break;
+                        case Key.S:
+                            OnSave();
                             break;
                     }
                 }
-            }
-        }
-
-        private void ListView_SelectionChanged(object sender, RoutedEventArgs e)
-        {
-            if (lstView.SelectedItem is QuestionBunch questionBunch)
-            {
-                QuestionSets.Clear();
-                foreach (var question in questionBunch.QuestionSets)
+                if (e.Key == Key.F2)
                 {
-                    QuestionSets.Add(question);
+                    if (lstView.ItemContainerGenerator.ContainerFromItem(lstView.SelectedItem) is ListViewItem container && container.IsFocused)
+                    {
+                        var textBlock = FindVisualChild<TextBlock>(container);
+                        ChangeBunchName(textBlock);
+                    }
                 }
-            }
-        }
-
-        private void CheckBox_CheckedChanged(object sender, RoutedEventArgs e)
-        {
-            if (sender is CheckBox checkBox && checkBox.DataContext is QuestionBunch item)
-            {
-                item.Use = checkBox.IsChecked.Value;
-                SaveXmlData();
-                UpdateActiveQuestionSets();
             }
         }
 
@@ -287,11 +466,6 @@ namespace WordPractice
             }
         }
 
-        private void dtGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            _root.QuestionBunches[lstView.SelectedIndex].QuestionSets = QuestionSets.ToArray();
-            SaveXmlData();
-        }
     }
 
     [XmlRoot("Root")]
