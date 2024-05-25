@@ -322,10 +322,12 @@ namespace WordPractice
                     textBlock.Text = textBox.Text;
                     textBox.Visibility = Visibility.Collapsed;
                     textBlock.Visibility = Visibility.Visible;
+                    _root.QuestionBunches[lstView.SelectedIndex].Name = textBlock.Text;
                     SaveXmlData();
                 }
             }
         }
+
 
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
@@ -339,6 +341,7 @@ namespace WordPractice
                         textBlock.Text = textBox.Text;
                         textBox.Visibility = Visibility.Collapsed;
                         textBlock.Visibility = Visibility.Visible;
+                        _root.QuestionBunches[lstView.SelectedIndex].Name = textBlock.Text;
                         SaveXmlData();
                     }
                     else if (e.Key == Key.Escape)
@@ -397,6 +400,21 @@ namespace WordPractice
                 {
                     return childOfChild;
                 }
+            }
+            return null;
+        }
+        private T FindVisualParent<T>(DependencyObject obj) where T : DependencyObject
+        {
+            DependencyObject parent = VisualTreeHelper.GetParent(obj);
+            if (parent != null && parent is T t)
+            {
+                return t;
+            }
+
+            T parentOfParent = FindVisualParent<T>(parent);
+            if (parentOfParent != null)
+            {
+                return parentOfParent;
             }
             return null;
         }

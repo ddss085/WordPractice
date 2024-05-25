@@ -6,6 +6,11 @@
         xmlns:local="clr-namespace:WordPractice"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded" KeyDown="Window_KeyDown">
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="FangSong"/>
+        </Style>
+    </Window.Resources>
     <TabControl x:Name="tbControl">
         <TabItem Header="Run">
             <Grid>
@@ -24,7 +29,7 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Name="txtHanzi" Grid.Column="0" FontSize="36" TextAlignment="Center">Hanzi</TextBlock>
-                    <TextBlock Name="txtPinyin" Grid.Column="1" FontSize="36" TextAlignment="Center">Pinyin</TextBlock>
+                    <TextBlock Name="txtPinyin" Grid.Column="1" FontSize="36" FontFamily="Times New Roman" TextAlignment="Center">Pinyin</TextBlock>
                 </Grid>
                 <Grid Grid.Row="2" Margin="10">
                     <Button Tag="Previous" HorizontalAlignment="Left" Width="100" Click="RunButton_Click">Previous</Button>
