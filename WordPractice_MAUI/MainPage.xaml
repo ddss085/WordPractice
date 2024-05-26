@@ -12,9 +12,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="0.05*"/>
             <RowDefinition Height="0.50*"/>
-            <RowDefinition Height="0.15*"/>
-            <RowDefinition Height="0.15*"/>
-            <RowDefinition Height="0.15*"/>
+            <RowDefinition Height="0.10*"/>
+            <RowDefinition Height="0.25*"/>
+            <RowDefinition Height="0.10*"/>
         </Grid.RowDefinitions>
 
         <Label  Grid.Row="0"
@@ -24,17 +24,38 @@
         <Label  Grid.Row="1"
                 Text="{Binding TextQuestion}"
                 Style="{StaticResource Headline}"
-                HeightRequest="185"
-                SemanticProperties.HeadingLevel="Level1" />
+                SemanticProperties.HeadingLevel="Level1" 
+                FontFamily="NotoSansSC-Regular"/>
         <Label  Grid.Row="2"
                 Text="{Binding TextPinyin}"
                 Style="{StaticResource Headline}"
-                SemanticProperties.HeadingLevel="Level1" />
-        <Label  Grid.Row="3"
+                SemanticProperties.HeadingLevel="Level1" 
+                FontFamily="NotoSansSC-Regular"
+                VerticalTextAlignment="Center"/>
+        <Label  Grid.Row="3" x:Name="HanziText"
                 Text="{Binding TextHanzi}"
                 Style="{StaticResource Headline}"
                 SemanticProperties.HeadingLevel="Level1" 
-                IsVisible="{Binding ShowHanzi}"/>
+                FontFamily="NotoSansSC-Regular"
+                VerticalTextAlignment="Center"
+                IsVisible="False"/>
+        <GraphicsView Grid.Row="3" x:Name="SmallDrawingBox"
+                      VerticalOptions="Center"
+                      HorizontalOptions="Center"
+                      />
+
+        <!--<Frame  Grid.Row="3" x:Name="SmallDrawingBox"
+                WidthRequest="100"
+                HeightRequest="100"
+                BackgroundColor="LightGray"
+                HorizontalOptions="Center"
+                VerticalOptions="CenterAndExpand"
+                BorderColor="Black"
+                IsVisible="True">
+            -->
+        <!-- Placeholder for drawing -->
+        <!--
+        </Frame>-->
 
         <Grid  Grid.Row="4">
             <Grid.ColumnDefinitions>
@@ -45,15 +66,18 @@
             <Button Grid.Column="0"
                     Text="Previous"
                     Command="{Binding CommandButton}" 
-                    CommandParameter="{Binding Text, Source={RelativeSource Mode=Self}}"/>
+                    CommandParameter="{Binding Text, Source={RelativeSource Mode=Self}}"
+                    Clicked="Button_Clicked"/>
             <Button Grid.Column="1"
                     Text="Show" 
                     Command="{Binding CommandButton}" 
-                    CommandParameter="{Binding Text, Source={RelativeSource Mode=Self}}"/>
+                    CommandParameter="{Binding Text, Source={RelativeSource Mode=Self}}"
+                    Pressed="Button_Pressed" Released="Button_Released"/>
             <Button Grid.Column="2"
                     Text="Next"
                     Command="{Binding CommandButton}" 
-                    CommandParameter="{Binding Text, Source={RelativeSource Mode=Self}}"/>
+                    CommandParameter="{Binding Text, Source={RelativeSource Mode=Self}}"
+                    Clicked="Button_Clicked"/>
         </Grid>
     </Grid>
 

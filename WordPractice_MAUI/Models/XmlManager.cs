@@ -13,14 +13,7 @@ namespace WordPractice_MAUI.Models
         private static XmlManager _instance;
         public static XmlManager Instance
         {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new XmlManager();
-                }
-                return _instance;
-            }
+            get => _instance ??= new XmlManager();
         }
         private bool _changed;
 
