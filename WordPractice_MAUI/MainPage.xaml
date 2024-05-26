@@ -32,17 +32,21 @@
                 SemanticProperties.HeadingLevel="Level1" 
                 FontFamily="NotoSansSC-Regular"
                 VerticalTextAlignment="Center"/>
-        <Label  Grid.Row="3" x:Name="HanziText"
-                Text="{Binding TextHanzi}"
-                Style="{StaticResource Headline}"
-                SemanticProperties.HeadingLevel="Level1" 
-                FontFamily="NotoSansSC-Regular"
-                VerticalTextAlignment="Center"
-                IsVisible="False"/>
-        <GraphicsView Grid.Row="3" x:Name="SmallDrawingBox"
-                      VerticalOptions="Center"
-                      HorizontalOptions="Center"
-                      />
+        <Border Grid.Row="3" Margin="5"
+                StrokeThickness="1" Stroke="White">
+            <Grid>
+                <Label x:Name="HanziText"
+                       Text="{Binding TextHanzi}"
+                       Style="{StaticResource Headline}"
+                       SemanticProperties.HeadingLevel="Level1" 
+                       FontSize="72"
+                       FontFamily="NotoSansSC-Regular"
+                       IsVisible="False"/>
+                <GraphicsView x:Name="SmallDrawingBox"
+                              VerticalOptions="Center"
+                              HorizontalOptions="Center"/>
+            </Grid>
+        </Border>
 
         <!--<Frame  Grid.Row="3" x:Name="SmallDrawingBox"
                 WidthRequest="100"
