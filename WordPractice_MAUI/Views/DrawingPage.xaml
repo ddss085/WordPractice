@@ -10,7 +10,7 @@
     <ContentPage.BindingContext>
         <vm:DrawingViewModel />
     </ContentPage.BindingContext>
-    <Grid>
+    <Grid BackgroundColor="{StaticResource Gray950}">
 
         <GraphicsView x:Name="DrawingCanvas"
                       BackgroundColor="White"

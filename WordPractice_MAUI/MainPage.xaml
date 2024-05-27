@@ -8,7 +8,7 @@
         <vm:MainViewModel />
     </ContentPage.BindingContext>
 
-    <Grid>
+    <Grid BackgroundColor="{StaticResource Gray950}">
         <Grid.RowDefinitions>
             <RowDefinition Height="0.03*"/>
             <RowDefinition Height="0.50*"/>
@@ -34,10 +34,20 @@
                 FontFamily="NotoSansSC-Regular"
                 VerticalTextAlignment="Center"/>
 
-        <Button Grid.Row="3"
-                Text="Expand"
-                Clicked="ExpandButton_Clicked"
-                />
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0"
+                    BackgroundColor="Lime"
+                    Clicked="ExpandButton_Clicked"
+                    />
+            <Button Grid.Column="1" 
+                    BackgroundColor="Tomato"
+                    Clicked="Button_Clicked"
+                    />
+        </Grid>
         <Border Grid.Row="4" Margin="5"
                 StrokeThickness="1" Stroke="White">
             <Grid>
