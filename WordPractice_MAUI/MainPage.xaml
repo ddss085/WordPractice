@@ -10,17 +10,18 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.05*"/>
+            <RowDefinition Height="0.03*"/>
             <RowDefinition Height="0.50*"/>
             <RowDefinition Height="0.10*"/>
+            <RowDefinition Height="0.05*"/>
             <RowDefinition Height="0.25*"/>
-            <RowDefinition Height="0.10*"/>
+            <RowDefinition Height="0.07*"/>
         </Grid.RowDefinitions>
 
         <Label  Grid.Row="0"
                 Text="{Binding TextCount}"
-                Style="{StaticResource SubHeadline}"
-                SemanticProperties.HeadingLevel="Level2" />
+                HorizontalTextAlignment="Center"
+                SemanticProperties.HeadingLevel="Level3"/>
         <Label  Grid.Row="1"
                 Text="{Binding TextQuestion}"
                 Style="{StaticResource Headline}"
@@ -32,7 +33,12 @@
                 SemanticProperties.HeadingLevel="Level1" 
                 FontFamily="NotoSansSC-Regular"
                 VerticalTextAlignment="Center"/>
-        <Border Grid.Row="3" Margin="5"
+
+        <Button Grid.Row="3"
+                Text="Expand"
+                Clicked="ExpandButton_Clicked"
+                />
+        <Border Grid.Row="4" Margin="5"
                 StrokeThickness="1" Stroke="White">
             <Grid>
                 <Label x:Name="HanziText"
@@ -43,8 +49,9 @@
                        FontFamily="NotoSansSC-Regular"
                        IsVisible="False"/>
                 <GraphicsView x:Name="SmallDrawingBox"
-                              VerticalOptions="Center"
-                              HorizontalOptions="Center"/>
+                              StartInteraction="OnStartInteraction"
+                              DragInteraction="OnDragInteraction"
+                              EndInteraction="OnEndInteraction"/>
             </Grid>
         </Border>
 
@@ -61,7 +68,7 @@
         <!--
         </Frame>-->
 
-        <Grid  Grid.Row="4">
+        <Grid  Grid.Row="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>

@@ -10,7 +10,7 @@
 
     <StackLayout>
         <Label Text="Menu" FontSize="24" HorizontalOptions="Center" />
-        <CollectionView ItemsSource="{Binding QuestionBunches}">
+        <CollectionView x:Name="BunchList" ItemsSource="{Binding QuestionBunches}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <StackLayout Orientation="Horizontal">

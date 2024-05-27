@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace WordPractice_MAUI.Models
@@ -15,7 +16,8 @@ namespace WordPractice_MAUI.Models
         {
             get => _instance ??= new XmlManager();
         }
-        private bool _changed;
+
+        private string _filePath = "Questions.xml";
 
         public event EventHandler UseChanged;
 
@@ -54,12 +56,17 @@ namespace WordPractice_MAUI.Models
         //        Console.WriteLine($"An error occurred: {ex.Message}");
         //    }
         //}
-        public async void Initialize()
+        public void Initialize()
         {
-            string filePath = "Questions.xml";
+            _filePath = "Questions.xml";
+            LoadXmlFile();
+        }
+
+        private async void LoadXmlFile()
+        {
             try
             {
-                using var stream = await FileSystem.OpenAppPackageFileAsync(filePath);
+                using var stream = await FileSystem.OpenAppPackageFileAsync(_filePath);
                 using var reader = new StreamReader(stream);
 
                 var contents = await reader.ReadToEndAsync();
@@ -88,6 +95,16 @@ namespace WordPractice_MAUI.Models
             {
                 await Application.Current.MainPage.DisplayAlert("Error", $"Unable to load XML file: {ex.Message}", "OK");
             }
+        }
+        public async void SaveXmlFile()
+        {
+            //string filePath = Path.Combine(FileSystem.AppDataDirectory, _filePath);
+;
+            //XmlSerializer serializer = new XmlSerializer(typeof(Root));
+            //using var writer = new StreamWriter();
+            //var xml = new XmlWriter();
+            //xml.
+            //serializer.Serialize(writer, XmlRoot);
         }
 
     }

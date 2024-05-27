@@ -73,6 +73,14 @@ namespace WordPractice_MAUI.Models
         private readonly List<List<PointF>> _pointsList;
         private readonly float _originalWidth;
         private readonly float _originalHeight;
+        private float _scaleX = 0.0F;
+        private float _scaleY = 0.0F;
+
+        public float OriginalWidth => _originalWidth;
+        public float OriginalHeight => _originalHeight;
+        public float ScaleX => _scaleX;
+        public float ScaleY => _scaleY;
+
 
         public CustomResizedDrawable(List<List<PointF>> points, float originalWidth, float originalHeight)
         {
@@ -90,6 +98,8 @@ namespace WordPractice_MAUI.Models
             {
                 float scaleX = dirtyRect.Width / _originalHeight;
                 float scaleY = dirtyRect.Height / _originalWidth;
+                _scaleX = scaleX;
+                _scaleY = scaleY;
 
                 foreach (var points in _pointsList)
                 {
