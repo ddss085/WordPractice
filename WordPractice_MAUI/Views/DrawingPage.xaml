@@ -18,10 +18,25 @@
                       DragInteraction="OnDragInteraction"
                       EndInteraction="OnEndInteraction"
                       />
-        <Label x:Name="ClearButton"
-               Text="Clear" 
-               Rotation="90"
-               HorizontalOptions="Start" 
-               VerticalOptions="Center" />
+        <StackLayout  HorizontalOptions="Center" 
+                      VerticalOptions="End" 
+                      Orientation="Vertical"
+                      Margin="10"
+                      Rotation="90">
+            <Border x:Name="ClearButton"
+                    StrokeThickness="1"
+                    HeightRequest="50">
+                <Label Text="Clear" 
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"/>
+            </Border>
+            <Border x:Name="ClearLastButton"
+                    StrokeThickness="1"
+                    HeightRequest="50">
+                <Label Text="ClearLast" 
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"/>
+            </Border>
+        </StackLayout>
     </Grid>
 </ContentPage>

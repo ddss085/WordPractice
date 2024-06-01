@@ -17,6 +17,9 @@ namespace WordPractice_MAUI.Views
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += OnClearButtonTapped;
             ClearButton.GestureRecognizers.Add(tapGestureRecognizer);
+            var tapGestureRecognizer2 = new TapGestureRecognizer();
+            tapGestureRecognizer2.Tapped += OnClearLastButtonTapped;
+            ClearLastButton.GestureRecognizers.Add(tapGestureRecognizer2);
 
             //_drawable = new CustomDrawable(_pointsList);
             //DrawingCanvas.Drawable = _drawable;
@@ -68,6 +71,11 @@ namespace WordPractice_MAUI.Views
         private void OnClearButtonTapped(object sender, EventArgs e)
         {
             DrawManager.Instance.ClearLine();
+            DrawingCanvas.Invalidate();
+        }
+        private void OnClearLastButtonTapped(object sender, EventArgs e)
+        {
+            DrawManager.Instance.ClearLastLine();
             DrawingCanvas.Invalidate();
         }
 

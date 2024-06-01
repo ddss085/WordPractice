@@ -39,6 +39,13 @@ namespace WordPractice_MAUI.Models
         {
             _pointsList.Clear();
         }
+        public void ClearLastLine()
+        {
+            if (_pointsList.Count > 0)
+            {
+                _pointsList.Remove(_pointsList.Last());
+            }
+        }
     }
     public class CustomDrawable : IDrawable
     {

@@ -38,14 +38,19 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0"
                     BackgroundColor="Lime"
                     Clicked="ExpandButton_Clicked"
                     />
             <Button Grid.Column="1" 
+                    BackgroundColor="Cyan"
+                    Clicked="ClearLastOneButton_Clicked"
+                    />
+            <Button Grid.Column="2" 
                     BackgroundColor="Tomato"
-                    Clicked="Button_Clicked"
+                    Clicked="ClearButton_Clicked"
                     />
         </Grid>
         <Border Grid.Row="4" Margin="5"
@@ -87,8 +92,7 @@
             <Button Grid.Column="0"
                     Text="Previous"
                     Command="{Binding CommandButton}" 
-                    CommandParameter="{Binding Text, Source={RelativeSource Mode=Self}}"
-                    Clicked="Button_Clicked"/>
+                    CommandParameter="{Binding Text, Source={RelativeSource Mode=Self}}"/>
             <Button Grid.Column="1"
                     Text="Show" 
                     Command="{Binding CommandButton}" 
@@ -97,8 +101,7 @@
             <Button Grid.Column="2"
                     Text="Next"
                     Command="{Binding CommandButton}" 
-                    CommandParameter="{Binding Text, Source={RelativeSource Mode=Self}}"
-                    Clicked="Button_Clicked"/>
+                    CommandParameter="{Binding Text, Source={RelativeSource Mode=Self}}"/>
         </Grid>
     </Grid>
 

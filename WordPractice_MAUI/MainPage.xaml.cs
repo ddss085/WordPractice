@@ -47,9 +47,14 @@ namespace WordPractice_MAUI
             SmallDrawingBox.IsVisible = true;
         }
 
-        private void Button_Clicked(object sender, EventArgs e)
+        private void ClearButton_Clicked(object sender, EventArgs e)
         {
             DrawManager.Instance.ClearLine();
+            SmallDrawingBox.Invalidate();
+        }
+        private void ClearLastOneButton_Clicked(object sender, EventArgs e)
+        {
+            DrawManager.Instance.ClearLastLine();
             SmallDrawingBox.Invalidate();
         }
         private void OnStartInteraction(object sender, TouchEventArgs e)
